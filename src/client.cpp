@@ -16,7 +16,7 @@ void Client::ConnectToServer() {
 		{
 			if (!error)
 			{
-				// код для отправки или получения данных
+				
 				std::cout << "\nThis Data\n";
 			}
 			else
