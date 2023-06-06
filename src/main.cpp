@@ -12,17 +12,17 @@ int main() {
     //usually ports should be different but if build on 1 PC ,need to use 1 port
     uint16_t port_server = 8080;
 
-    // Ñîçäàåì Server è ïåðåäàåì io_context è port â êîíñòðóêòîð
+    
     boost::asio::streambuf buffer_server;
     auto server = std::make_shared<Server>(io_context, port_server, buffer_server);
 
-    // Ñîçäàåì Client è ïåðåäàåì io_context è port â êîíñòðóêòîð
+   
     auto client = std::make_shared<Client>(io_context2, port_server, buffer_server);
     server->Listening();
     std::this_thread::sleep_for(std::chrono::seconds(1));
     client->ConnectToServer();
 
-    // Çàïóñêàåì io_context 
+    
     std::thread server_thread([&]() { io_context.run(); });
 
     std::thread client_thread([&]() {io_context2.run(); });
