@@ -32,7 +32,7 @@ void Connection::ReadData()
 					std::istream input_stream(buffer_.get());
 					std::string data;
 					std::getline(input_stream, data);
-					std::cout << "\nПрочитанные данные: \n" << data;
+					std::cout << "\nData: \n" << data;
 					ReadData();
 				}
 				socket_.close();
