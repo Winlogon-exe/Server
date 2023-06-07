@@ -27,15 +27,11 @@ void Connection::ReadData()
 		{
 			if (!error)
 			{
-				while (true)
-				{
 					std::istream input_stream(buffer_.get());
 					std::string data;
 					std::getline(input_stream, data);
 					std::cout << "\nData: \n" << data;
 					ReadData();
-				}
-				socket_.close();
 			}
 			else
 			{
