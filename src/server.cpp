@@ -22,20 +22,21 @@ boost::asio::ip::tcp::socket& Connection::socket()
 
 void Connection::ReadData()
 {
-	auto self = (shared_from_this());
-	boost::asio::async_read_until(socket_, *buffer_, "\n", [this, self](boost::system::error_code error, std::size_t bytes_transferred)
+	auto self = shared_from_this();
+	boost::asio::async_read_until(socket_, *buffer_, "\n",
+		[this, self](boost::system::error_code error, std::size_t bytes_transferred)
 		{
 			if (!error)
 			{
-					std::istream input_stream(buffer_.get());
-					std::string data;
-					std::getline(input_stream, data);
-					std::cout << "\nData: \n" << data;
-					ReadData();
+				std::istream input_stream(buffer_.get());
+				std::string data;
+				std::getline(input_stream, data);
+				std::cout << "\nПрочитанные данные: \n" << data << std::endl;
+				ReadData();
 			}
 			else
 			{
-				std::cout << "Failed read data: " << error.message() << "\n";
+				std::cout << "Failed to read data: " << error.message() << std::endl;
 			}
 		});
 }
@@ -44,17 +45,18 @@ void Server::Listening()
 {
 	//create object when makes connection 
 	auto connection = std::make_shared<Connection>(io_context_);
-	acceptor_.async_accept(connection->socket(), [&](const boost::system::error_code& error)
+	acceptor_.async_accept(connection->socket(), [this, connection](const boost::system::error_code& error)
 		{
 			if (!error)
 			{
-				std::cout << "\nConnection LOG\n";
+				std::cout << "Connection LOG\n";
 				connection->Start();
 			}
 			else
 			{
 				std::cout << "\nFailed listening server: \n" << error.message() << "\n";
 			}
+			Listening(); 
 		});
 }
 
